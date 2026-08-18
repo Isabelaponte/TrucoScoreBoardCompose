@@ -48,10 +48,18 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var teamAPoints by remember { mutableIntStateOf(0) }
     var teamBPoints by remember { mutableIntStateOf(0) }
 
+    val hasWinner = teamAPoints >= 12 || teamBPoints >= 12
+
     val messageMaoDeOnze = when {
-        teamAPoints >= 11 && teamBPoints >= 11 -> "Ambas as equipes estão em Mão de 11!"
-        teamAPoints >= 11 -> "Equipe A em Mão de 11!"
-        teamBPoints >= 11 -> "Equipe B em Mão de 11!"
+        teamAPoints == 11 && teamBPoints == 11 -> "Ambas as equipes estão em Mão de 11!"
+        teamAPoints == 11 -> "Equipe A em Mão de 11!"
+        teamBPoints == 11 -> "Equipe B em Mão de 11!"
+        else -> ""
+    }
+
+    val winner = when {
+        teamAPoints >= 12 -> "Equipe A venceu a partida!"
+        teamBPoints >= 12 -> "Equipe B venceu a partida!"
         else -> ""
     }
 
@@ -78,15 +86,22 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 teamName = "A",
                 onAddPoint = { teamAPoints++ },
                 onAddThreePoints = { teamAPoints +=3 },
-                teamPoints = teamAPoints
+                teamPoints = teamAPoints,
+                winner = hasWinner
             )
             CardTeamPoints(
                 teamName = "B",
                 onAddPoint = { teamBPoints++ },
                 onAddThreePoints = { teamBPoints +=3 },
-                teamPoints = teamBPoints
+                teamPoints = teamBPoints,
+                winner = hasWinner
             )
         }
+        Text(
+            text = winner,
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp
+        )
         Button(
             onClick = { teamAPoints = 0
                         teamBPoints = 0 },
@@ -111,7 +126,8 @@ fun CardTeamPoints(
     teamName: String,
     onAddPoint: () -> Unit,
     onAddThreePoints: () -> Unit,
-    teamPoints: Int
+    teamPoints: Int,
+    winner: Boolean
 ) {
     Column(
         modifier = Modifier.padding(30.dp),
@@ -131,12 +147,14 @@ fun CardTeamPoints(
             modifier = Modifier.padding(20.dp)
         )
         Button(
-            onClick = { onAddPoint() }
+            onClick = { onAddPoint() },
+            enabled = !winner
         ) {
             Text(text = "+1 Ponto", fontSize = 16.sp)
         }
         Button(
-            onClick = { onAddThreePoints() }
+            onClick = { onAddThreePoints() },
+            enabled = !winner
         ) {
             Text(text = "+3 Pontos", fontSize = 16.sp)
         }
@@ -146,5 +164,5 @@ fun CardTeamPoints(
 @Preview(showBackground = true)
 @Composable
 fun CardTeamPointsPreview() {
-    CardTeamPoints(teamName = "A", onAddPoint = {}, onAddThreePoints = {}, teamPoints = 11)
+    CardTeamPoints(teamName = "A", onAddPoint = {}, onAddThreePoints = {}, teamPoints = 11, winner = true)
 }
