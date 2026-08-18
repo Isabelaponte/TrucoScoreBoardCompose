@@ -65,7 +65,6 @@ fun MainScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(20.dp)
         )
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             ) {
@@ -88,6 +87,16 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 onAddPoint = { teamBPoints++ },
                 onAddThreePoints = { teamBPoints +=3 },
                 teamPoints = teamBPoints
+            )
+        }
+        Button(
+            onClick = { teamAPoints = 0
+                        teamBPoints = 0 },
+            modifier = Modifier.fillMaxWidth().padding(20.dp),
+            ) {
+            Text(
+                text = "Resetar Pontuações",
+                fontSize = 15.sp
             )
         }
     }
