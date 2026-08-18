@@ -23,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.edu.ifsp.scl.sc3035018.trucoscoreboardcompose.ui.theme.TrucoScoreBoardComposeTheme
@@ -74,9 +73,22 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 text = messageMaoDeOnze,
                 textAlign = TextAlign.Center,
                 fontSize = 18.sp,
-                modifier = Modifier.weight(1f).padding(20.dp)
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(20.dp)
             )
-
+            CardTeamPoints(
+                teamName = "A",
+                onAddPoint = { teamAPoints++ },
+                onAddThreePoints = { teamAPoints +=3 },
+                teamPoints = teamAPoints
+            )
+            CardTeamPoints(
+                teamName = "B",
+                onAddPoint = { teamBPoints++ },
+                onAddThreePoints = { teamBPoints +=3 },
+                teamPoints = teamBPoints
+            )
         }
     }
 }
@@ -89,35 +101,35 @@ fun MainScreenPreview() {
 
 @Composable
 fun CardTeamPoints(
-    modifier: Modifier = Modifier,
-    teamName: String
+    teamName: String,
+    onAddPoint: () -> Unit,
+    onAddThreePoints: () -> Unit,
+    teamPoints: Int
 ) {
-    var teamPointsCounter by remember { mutableIntStateOf(0) }
-
     Column(
         modifier = Modifier.padding(30.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Team $teamName",
+            text = "Time $teamName",
             textAlign = TextAlign.Center,
             fontSize = 20.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
-            text = "$teamPointsCounter",
+            text = "$teamPoints",
             textAlign = TextAlign.Center,
             fontSize = 30.sp,
             modifier = Modifier.padding(20.dp)
         )
         Button(
-            onClick = { teamPointsCounter++ }
+            onClick = { onAddPoint }
         ) {
             Text(text = "+1 Ponto", fontSize = 16.sp)
         }
         Button(
-            onClick = { teamPointsCounter += 3 }
+            onClick = { onAddThreePoints }
         ) {
             Text(text = "+3 Pontos", fontSize = 16.sp)
         }
@@ -127,5 +139,5 @@ fun CardTeamPoints(
 @Preview(showBackground = true)
 @Composable
 fun CardTeamPointsPreview() {
-    CardTeamPoints(teamName = "A")
+    CardTeamPoints(teamName = "A", onAddPoint = {}, onAddThreePoints = {}, teamPoints = 5)
 }
