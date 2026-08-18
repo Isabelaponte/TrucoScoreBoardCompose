@@ -46,6 +46,14 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
+    var teamAPoints by remember { mutableIntStateOf(0) }
+    var teamBPoints by remember { mutableIntStateOf(0) }
+
+    val messageMaoDeOnze = when {
+        teamAPoints >= 11 -> "Equipe A em Mão de 11!"
+        teamBPoints >= 11 -> "Equipe B em Mão de 11!"
+        else -> ""
+    }
 
     Column(modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
@@ -59,12 +67,11 @@ fun MainScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.padding(20.dp)
         )
 
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             ) {
             Text(
-                text = "Nenhuma Equipe em Mão de 11!!",
+                text = messageMaoDeOnze,
                 textAlign = TextAlign.Center,
                 fontSize = 18.sp,
                 modifier = Modifier.weight(1f).padding(20.dp)
@@ -81,10 +88,14 @@ fun MainScreenPreview() {
 }
 
 @Composable
-fun CardTeamPoints(modifier: Modifier = Modifier, teamName: String, teamPointsCounter: Int) {
+fun CardTeamPoints(
+    modifier: Modifier = Modifier,
+    teamName: String
+) {
     var teamPointsCounter by remember { mutableIntStateOf(0) }
 
-    Column(modifier = Modifier.padding(30.dp),
+    Column(
+        modifier = Modifier.padding(30.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -95,7 +106,7 @@ fun CardTeamPoints(modifier: Modifier = Modifier, teamName: String, teamPointsCo
             fontWeight = FontWeight.Medium
         )
         Text(
-            text = "10",
+            text = "$teamPointsCounter",
             textAlign = TextAlign.Center,
             fontSize = 30.sp,
             modifier = Modifier.padding(20.dp)
@@ -103,18 +114,12 @@ fun CardTeamPoints(modifier: Modifier = Modifier, teamName: String, teamPointsCo
         Button(
             onClick = { teamPointsCounter++ }
         ) {
-            Text(
-                text = "+1 Ponto",
-                fontSize = 16.sp
-            )
+            Text(text = "+1 Ponto", fontSize = 16.sp)
         }
         Button(
-            onClick = { teamPointsCounter++ }
+            onClick = { teamPointsCounter += 3 }
         ) {
-            Text(
-                text = "+3 Pontos",
-                fontSize = 16.sp
-            )
+            Text(text = "+3 Pontos", fontSize = 16.sp)
         }
     }
 }
@@ -122,5 +127,5 @@ fun CardTeamPoints(modifier: Modifier = Modifier, teamName: String, teamPointsCo
 @Preview(showBackground = true)
 @Composable
 fun CardTeamPointsPreview() {
-    CardTeamPoints(teamName = "A", teamPointsCounter = 0)
+    CardTeamPoints(teamName = "A")
 }
