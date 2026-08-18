@@ -49,6 +49,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     var teamBPoints by remember { mutableIntStateOf(0) }
 
     val messageMaoDeOnze = when {
+        teamAPoints >= 11 && teamBPoints >= 11 -> "Ambas as equipes estão em Mão de 11!"
         teamAPoints >= 11 -> "Equipe A em Mão de 11!"
         teamBPoints >= 11 -> "Equipe B em Mão de 11!"
         else -> ""
@@ -65,17 +66,14 @@ fun MainScreen(modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(20.dp)
         )
+        Text(
+            text = messageMaoDeOnze,
+            textAlign = TextAlign.Center,
+            fontSize = 18.sp
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             ) {
-            Text(
-                text = messageMaoDeOnze,
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(20.dp)
-            )
             CardTeamPoints(
                 teamName = "A",
                 onAddPoint = { teamAPoints++ },
@@ -133,12 +131,12 @@ fun CardTeamPoints(
             modifier = Modifier.padding(20.dp)
         )
         Button(
-            onClick = { onAddPoint }
+            onClick = { onAddPoint() }
         ) {
             Text(text = "+1 Ponto", fontSize = 16.sp)
         }
         Button(
-            onClick = { onAddThreePoints }
+            onClick = { onAddThreePoints() }
         ) {
             Text(text = "+3 Pontos", fontSize = 16.sp)
         }
@@ -148,5 +146,5 @@ fun CardTeamPoints(
 @Preview(showBackground = true)
 @Composable
 fun CardTeamPointsPreview() {
-    CardTeamPoints(teamName = "A", onAddPoint = {}, onAddThreePoints = {}, teamPoints = 5)
+    CardTeamPoints(teamName = "A", onAddPoint = {}, onAddThreePoints = {}, teamPoints = 11)
 }
