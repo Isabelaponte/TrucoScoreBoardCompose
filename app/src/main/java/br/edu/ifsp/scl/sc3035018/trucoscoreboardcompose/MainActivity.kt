@@ -81,6 +81,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         )
         Row(
             modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
             ) {
             CardTeamPoints(
                 teamName = "A",
